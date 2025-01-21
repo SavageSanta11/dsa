@@ -6,27 +6,26 @@ import heapq
 
 class Solution:
     def leastInterval(self, tasks: List[str], n: int) -> int:
-        freq = Counter(tasks)
-        counts = [-v for k, v in freq.items()]
-        heapq.heapify(counts)
+
+        count = Counter(tasks)
+        maxHeap = [-cnt for cnt in count.values()]
+        heapq.heapify(maxHeap)
 
         time = 0
+        q = deque() #[-cnt, when it can be added next]
 
-        cooldown_queue = deque()
+        while maxHeap or q:
+            time+= 1
 
-        while cooldown_queue or counts:
-            time += 1
+            if maxHeap:
+                cnt = 1 + heapq.heappop(maxHeap)
+                if cnt != 0:
+                    q.append([cnt, time + n])
 
-            if counts:
-                task = heapq.heappop(counts)
-                curr_count = task + 1 # + 1 because the counts are negative
-                if curr_count != 0:
-                    cooldown_queue.append((curr_count, time + n))
-
-            if cooldown_queue and cooldown_queue[0][1] == time: # is some tasks cooldown is over
-                counts.append(cooldown_queue.popleft()[0])
-
+            if q and q[0][1] == time: ## if some task in the queue can now be completed because its idle time is over
+                heapq.heappush(maxHeap, q.popleft()[0]) 
         return time
+        
 ```
 
 #### Steps to Solve the Problem
