@@ -1,5 +1,33 @@
 
 ### Task Scheduler
+```python
+from collections import Counter
+import heapq
+
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        freq = Counter(tasks)
+        counts = [-v for k, v in freq.items()]
+        heapq.heapify(counts)
+
+        time = 0
+
+        cooldown_queue = deque()
+
+        while cooldown_queue or counts:
+            time += 1
+
+            if counts:
+                task = heapq.heappop(counts)
+                curr_count = task + 1 # + 1 because the counts are negative
+                if curr_count != 0:
+                    cooldown_queue.append((curr_count, time + n))
+
+            if cooldown_queue and cooldown_queue[0][1] == time: # is some tasks cooldown is over
+                counts.append(cooldown_queue.popleft()[0])
+
+        return time
+```
 
 #### Steps to Solve the Problem
 
