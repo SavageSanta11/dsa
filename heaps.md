@@ -1,3 +1,79 @@
+### Kth Largest Element in a Stream
+```python
+```
+
+#### Steps to solve the problem
+
+#### Complexity
+
+### Last Stone Weight
+```python
+import heapq
+class Solution:
+    def lastStoneWeight(self, stones: List[int]) -> int:
+        maxheap = [-x for x in stones]
+        heapq.heapify(maxheap)
+
+        while len(maxheap) >= 2:
+            a = heapq.heappop(maxheap)
+            b = heapq.heappop(maxheap)
+
+            diff = (a - b)
+
+            if diff != 0:
+                heapq.heappush(maxheap, diff)
+
+        if maxheap:
+            return -maxheap[0]
+        else:
+            return 0
+
+```
+
+#### Steps to solve the problem
+1. Maxheap to store stone weights
+2. While heap length is >=2 , pop, check diff and push pack if needed
+3. If there is still an element in that heap, return it else 0
+
+#### Complexity
+1. Time - O(n) to heapify. O(logn) for each pop. Approx n calls to push and pop so O(nlogn)
+2. Space - O(n) for heap
+
+
+### K closest points to origin
+```python
+import heapq
+class Solution:
+    def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
+        maxheap = [(-1*(x**2 + y ** 2), (x, y)) for (x, y) in points]
+        heapq.heapify(maxheap)
+
+        while len(maxheap) > k:
+            heapq.heappop(maxheap)
+
+        res = [item[1] for item in maxheap]
+        return res
+
+
+```
+
+#### Steps to solve the problem
+1. Use a maxheap to store (-dist, (x, y)) tuples. Keep pushing into heap and only pop while the heap size is >=k. Re
+2. Remainining elements are the ones with lest distance
+
+#### Complexity
+1. Time - n calls to push n-k calls to pop. log(k) for each pop. Total is O( (2n-k)logk) = O(2nlogk - klogk) ~ O(nlogk)
+2. Space - O(n)
+
+#### Hint - for these problems with k closest or k largest, it typically means you just need to maintain a heap of size k. So don't be in a rush to heapify.
+
+### K closest points to origin
+
+#### Steps to solve the problem
+
+#### Complexity
+
+
 ### Reorganize String
 ```python
 class Solution:
@@ -51,7 +127,8 @@ Approach: O(nlogk)
 - O(n) for counting the frequency of each character in the string. Here, n is the length of the string.
 - O(klogk) for building the max heap, where k is the number of unique characters in the string.
 - The heap operations (insertion and deletion) would require logk time each. In the worst-case scenario, you would be doing these operations n times (once for each character in the string).
-- 
+
+- Space is O(k)
 ### Task Scheduler
 ```python
 from collections import Counter
